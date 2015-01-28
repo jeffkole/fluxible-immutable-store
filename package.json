@@ -1,0 +1,26 @@
+{
+  "name": "fluxible-immutable-store",
+  "version": "0.0.1",
+  "description": "A helper for creating Fluxible BaseStores that manage immutable data structures.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jeffkole/fluxible-immutable-store.git"
+  },
+  "keywords": [
+    "Flux",
+    "Fluxible",
+    "React",
+    "immutable",
+    "store"
+  ],
+  "author": "Jeff Kolesky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeffkole/fluxible-immutable-store/issues"
+  },
+  "homepage": "https://github.com/jeffkole/fluxible-immutable-store"
+}
