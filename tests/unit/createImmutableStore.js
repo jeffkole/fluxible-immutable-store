@@ -11,8 +11,8 @@ Dispatcher.registerStore(RegularStore);
 var dispatcher = new Dispatcher({});
 
 describe('basic immutable store', function () {
-  it('should not have any fields defined on its prototype', function () {
-    expect(BasicStore.prototype.fields).to.equal(undefined);
+  it('should not have any accessors defined on its prototype', function () {
+    expect(BasicStore.prototype.accessors).to.equal(undefined);
   });
 
   it('should mutate its internal state in response to a dispatch', function () {
