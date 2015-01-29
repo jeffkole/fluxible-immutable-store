@@ -1,5 +1,7 @@
 # Fluxible Immutable Store
 
+[![Build Status](https://travis-ci.org/jeffkole/fluxible-immutable-store.svg?branch=master)](https://travis-ci.org/jeffkole/fluxible-immutable-store)
+
 A helper function to create stores that hide private data.  That is the one and
 only feature of this module.
 
