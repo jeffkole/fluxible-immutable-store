@@ -7,15 +7,15 @@ var RegularStore = createImmutableStore(function () {
     storeName: 'RegularStore',
 
     handlers: {
-      'SET_STRING': '_onSetString'
+      'TRIGGER': '_trigger'
     },
 
     initialize: function () {
-      this.string = 'Hello';
+      this.number = 50;
     },
 
-    _onSetString: function (s) {
-      this.string = s;
+    _trigger: function (num) {
+      this.number = num;
     }
   };
 });

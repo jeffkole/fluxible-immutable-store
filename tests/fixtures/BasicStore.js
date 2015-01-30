@@ -9,14 +9,14 @@ var BasicStore = createImmutableStore(function () {
     storeName: 'BasicStore',
 
     handlers: {
-      'SET_NUMBER': '_onSetNumber'
+      'TRIGGER': '_trigger'
     },
 
     initialize: function () {
       number = 50;
     },
 
-    _onSetNumber: function (num) {
+    _trigger: function (num) {
       number = num;
     },
 

@@ -54,7 +54,7 @@ var TodoStore = createImmutableStore(function () {
     // Define the accessors to the internal state
     accessors: {
       'todos': function () {
-        return todos;
+        return todos.toJS();
       }
     }
   };
@@ -95,6 +95,42 @@ var TodoList = React.createClass({
 
 You won't be able to reassign a new object to the `todoStore.todos` field, thus
 getting you one step closer to an immutable store.
+
+## Alternate Accessor Definition
+
+Alternatively, you can set the private data on the `privates` object that is
+passed into your spec factory function and define the accessors as a simple
+array of field names.  If you do not need to change the data structure upon
+access (such as converting an `Immutable.List` to a plain Javascript array),
+then this method is more succinct.
+
+```javascript
+var Immutable = require('immutable');
+var createImmutableStore = require('fluxible-immutable-store');
+
+// Set any private field data as fields on `privates`
+var TodoStore = createImmutableStore(function (privates) {
+  // This is the spec that is expected by createStore
+  return {
+    storeName: 'TodoStore',
+    handers: {
+      'CREATE_TODO_START': '_createTodoStart'
+    },
+    initialize: function () {
+      privates.todos = Immutable.List();
+    },
+    _createTodoStart: function (todo) {
+      privates.todos = privates.todos.push(Immutable.Map(todo));
+      this.emitChange();
+    },
+
+    // Define the accessors to the internal state by their names in `privates`
+    accessors: [ 'todos' ]
+  };
+});
+
+module.exports = TodoStore;
+```
 
 [immutable]: http://facebook.github.io/immutable-js/
 [mori]: http://swannodette.github.io/mori/
