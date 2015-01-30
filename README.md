@@ -4,19 +4,19 @@
 [![Build Status](https://travis-ci.org/jeffkole/fluxible-immutable-store.svg?branch=master)](https://travis-ci.org/jeffkole/fluxible-immutable-store)
 [![Coverage Status](https://coveralls.io/repos/jeffkole/fluxible-immutable-store/badge.svg)](https://coveralls.io/r/jeffkole/fluxible-immutable-store)
 
-A helper function to create stores that hide private data.  That is the one and
-only feature of this module.
+A helper function to create stores that protect private data from being set from
+outside.  That is the one and only feature of this module.
 
 Use whatever data structures you want inside.  You can choose to use immutable
-data structures from [Immutable][immutable], [Mori][mori], or any other, or you
-can choose to return deep clones of your internal data.  All this function does
-is help you keep the internals of your store internal.
+data structures from [Immutable][immutable], [Mori][mori], or any other library,
+or you can choose to return deep clones of your internal data.  All this
+function does is help you keep the internals of your store internal.
 
 The library relies on Yahoo!'s [Dispatchr][dispatchr]
 [`createStore`][createStore] function.  You can use these stores with just the
 dispatcher or with Yahoo!'s [Fluxible][fluxible] library.
 
-## Usage
+## Installation
 
 ```
 npm install --save fluxible-immutable-store
@@ -24,9 +24,10 @@ npm install --save fluxible-immutable-store
 
 ## Example
 
-Here is a piece of a reimplementation of the [TodoStore][todostore] from the
+Here is part of a reimplementation of the [TodoStore][todostore] from the
 [Fluxible examples][fexamples].  It uses Facebook's [Immutable][immutable] data
-structures internally, but that is merely a design choice.
+structures internally, but that is merely a design choice, not a requirement of
+this module.
 
 ```javascript
 var Immutable = require('immutable');
@@ -66,6 +67,34 @@ The variables that represent the store's state can be exposed as accessors.
 They will have read-only properties created for them.  If you use an immutable
 data structure, then there will be no way to set the property from the outside
 or to mutate the structure's internal data.
+
+In your component that needs access to the `TodoStore`, you would have code
+similar to this:
+
+```javascript
+var TodoList = React.createClass({
+  mixins: [ StoreMixin ],
+
+  statics: {
+    storeListeners: [ 'TodoStore' ]
+  },
+
+  // Called when TodoStore emits a change event
+  onChange: function onChange() {
+    var todoStore = this.getStore('TodoStore');
+    this.setState({
+      todos: todoStore.todos
+    });
+  }
+
+  render: function render() {
+    ...
+  }
+});
+```
+
+You won't be able to reassign a new object to the `todoStore.todos` field, thus
+getting you one step closer to an immutable store.
 
 [immutable]: http://facebook.github.io/immutable-js/
 [mori]: http://swannodette.github.io/mori/
