@@ -40,7 +40,7 @@ var TodoStore = createImmutableStore(function () {
   // This is the spec that is expected by createStore
   return {
     storeName: 'TodoStore',
-    handers: {
+    handlers: {
       'CREATE_TODO_START': '_createTodoStart'
     },
     initialize: function () {
@@ -113,7 +113,7 @@ var TodoStore = createImmutableStore(function (privates) {
   // This is the spec that is expected by createStore
   return {
     storeName: 'TodoStore',
-    handers: {
+    handlers: {
       'CREATE_TODO_START': '_createTodoStart'
     },
     initialize: function () {
