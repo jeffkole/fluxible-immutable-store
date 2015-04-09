@@ -1,6 +1,6 @@
 'use strict';
 
-var createStore = require('dispatchr/utils/createStore');
+var createStore = require('dispatchr/addons/createStore');
 
 /**
  * Creates a store based on the spec returned by `specFactory`.  See Dispatchr's

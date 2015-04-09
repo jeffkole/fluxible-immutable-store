@@ -1,18 +1,21 @@
 'use strict';
 
 var expect = require('chai').expect;
-var Dispatcher = require('dispatchr')();
+var dispatcher = require('dispatchr');
 
 var BasicStore = require('../fixtures/BasicStore');
 var RegularStore = require('../fixtures/RegularStore');
 var PrivatesStore = require('../fixtures/PrivatesStore');
 
-Dispatcher.registerStore(BasicStore);
-Dispatcher.registerStore(RegularStore);
-Dispatcher.registerStore(PrivatesStore);
+var stores = [
+  BasicStore,
+  RegularStore,
+  PrivatesStore
+];
 
 beforeEach(function () {
-  this.dispatcher = new Dispatcher({});
+  this.dispatcher = dispatcher.createDispatcher({ stores: stores });
+  this.dispatcherContext = this.dispatcher.createContext({});
 });
 
 describe('A store defining its own accessor functions', function () {
@@ -21,14 +24,14 @@ describe('A store defining its own accessor functions', function () {
   });
 
   it('should mutate its internal state in response to a dispatch', function () {
-    var store = this.dispatcher.getStore(BasicStore);
+    var store = this.dispatcherContext.getStore(BasicStore);
     expect(store.number).to.equal(50);
-    this.dispatcher.dispatch('TRIGGER', 100);
+    this.dispatcherContext.dispatch('TRIGGER', 100);
     expect(store.number).to.equal(100);
   });
 
   it('should not allow set access to that internal state', function () {
-    var store = this.dispatcher.getStore(BasicStore);
+    var store = this.dispatcherContext.getStore(BasicStore);
     var num = store.number;
     expect(
       function () {
@@ -44,14 +47,14 @@ describe('A store not using accessors', function () {
   });
 
   it('should mutate its internal state in response to a dispatch', function () {
-    var store = this.dispatcher.getStore(RegularStore);
+    var store = this.dispatcherContext.getStore(RegularStore);
     expect(store.number).to.equal(50);
-    this.dispatcher.dispatch('TRIGGER', 100);
+    this.dispatcherContext.dispatch('TRIGGER', 100);
     expect(store.number).to.equal(100);
   });
 
   it('should allow set access to that internal state', function () {
-    var store = this.dispatcher.getStore(RegularStore);
+    var store = this.dispatcherContext.getStore(RegularStore);
     store.number = 250;
     expect(store.number).to.equal(250);
   });
@@ -63,14 +66,14 @@ describe('A store using the `privates` feature', function () {
   });
 
   it('should mutate its internal state in response to a dispatch', function () {
-    var store = this.dispatcher.getStore(PrivatesStore);
+    var store = this.dispatcherContext.getStore(PrivatesStore);
     expect(store.number).to.equal(50);
-    this.dispatcher.dispatch('TRIGGER', 100);
+    this.dispatcherContext.dispatch('TRIGGER', 100);
     expect(store.number).to.equal(100);
   });
 
   it('should not allow set access to that internal state', function () {
-    var store = this.dispatcher.getStore(PrivatesStore);
+    var store = this.dispatcherContext.getStore(PrivatesStore);
     var num = store.number;
     expect(
       function () {
