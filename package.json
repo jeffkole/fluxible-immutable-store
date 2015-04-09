@@ -1,6 +1,6 @@
 {
   "name": "fluxible-immutable-store",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A helper for creating Fluxible/Dispatchr BaseStores that manage immutable data structures.",
   "main": "index.js",
   "scripts": {
