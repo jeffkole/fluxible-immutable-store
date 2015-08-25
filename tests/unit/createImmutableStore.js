@@ -39,6 +39,22 @@ describe('A store defining its own accessor functions', function () {
       }).to.throw(TypeError);
     expect(store.number).to.equal(num);
   });
+
+  it('should not conflict with other instances of itself', function () {
+    var dispatcherA = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextA = dispatcherA.createContext({});
+    var dispatcherB = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextB = dispatcherB.createContext({});
+
+    var storeA = dispatcherContextA.getStore(BasicStore);
+    var storeB = dispatcherContextB.getStore(BasicStore);
+
+    expect(storeA.number).to.equal(50);
+    expect(storeB.number).to.equal(50);
+    dispatcherContextA.dispatch('TRIGGER', 100);
+    expect(storeA.number).to.equal(100);
+    expect(storeB.number).to.equal(50);
+  });
 });
 
 describe('A store not using accessors', function () {
@@ -57,6 +73,22 @@ describe('A store not using accessors', function () {
     var store = this.dispatcherContext.getStore(RegularStore);
     store.number = 250;
     expect(store.number).to.equal(250);
+  });
+
+  it('should not conflict with other instances of itself', function () {
+    var dispatcherA = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextA = dispatcherA.createContext({});
+    var dispatcherB = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextB = dispatcherB.createContext({});
+
+    var storeA = dispatcherContextA.getStore(RegularStore);
+    var storeB = dispatcherContextB.getStore(RegularStore);
+
+    expect(storeA.number).to.equal(50);
+    expect(storeB.number).to.equal(50);
+    dispatcherContextA.dispatch('TRIGGER', 100);
+    expect(storeA.number).to.equal(100);
+    expect(storeB.number).to.equal(50);
   });
 });
 
@@ -80,5 +112,21 @@ describe('A store using the `privates` feature', function () {
         store.number = 250;
       }).to.throw(TypeError);
     expect(store.number).to.equal(num);
+  });
+
+  it('should not conflict with other instances of itself', function () {
+    var dispatcherA = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextA = dispatcherA.createContext({});
+    var dispatcherB = dispatcher.createDispatcher({ stores: stores });
+    var dispatcherContextB = dispatcherB.createContext({});
+
+    var storeA = dispatcherContextA.getStore(PrivatesStore);
+    var storeB = dispatcherContextB.getStore(PrivatesStore);
+
+    expect(storeA.number).to.equal(50);
+    expect(storeB.number).to.equal(50);
+    dispatcherContextA.dispatch('TRIGGER', 100);
+    expect(storeA.number).to.equal(100);
+    expect(storeB.number).to.equal(50);
   });
 });
